@@ -19,8 +19,8 @@ screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGH
 screen.fill(Constants.BG_COLOR)
 
 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 30)
-cell1 = Cell('3', 0, 0, screen)
 board.draw()
+
 
 while True:
     for event in pygame.event.get():
