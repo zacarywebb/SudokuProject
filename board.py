@@ -1,7 +1,7 @@
 import pygame
 from Projects.SudokuProject.constants import *
 from cell import Cell
-from sudoku_generator import generate_sudoku
+from sudoku_generator import SudokuGenerator
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -10,8 +10,20 @@ class Board:
         self.screen = screen
         self.difficulty = difficulty
         self.cell_dict = {}
+
+        # Create an instance of SudokuGenerator class and assign self.correct_board with a 2D list that has no
+        # removed values. Uses a copy so editing self.board does not edit self.correct_board
+        sudoku = SudokuGenerator(9, difficulty)
+        sudoku.fill_values()
+        correct_board_copy = sudoku.get_board()
+        self.correct_board = [x[:] for x in correct_board_copy]
+
+        # Remove cells from the 2D list, replacing them with zeroes. Initialize self.board to equal this 2D list
+        sudoku.remove_cells()
+        board = sudoku.get_board()
+        self.board = board
+
         # Create each cell
-        self.board = generate_sudoku(9, self.difficulty)
         for i in range(9):
             for j in range(9):
                 cell = Cell(self.board[i][j], i, j, self.screen)
@@ -63,17 +75,22 @@ class Board:
 
     def select(self, row, col):
         cell = self.cell_dict[f'Cell{row}, {col}']
-        pygame.draw.rect(self.screen, Constants.SELECTED_LINE_COLOR, (151 + col * Constants.CELL_SIZE, 150 + row *
+        # Only select if the value of the cell is 0
+        if cell.value == 0:
+            pygame.draw.rect(self.screen, Constants.SELECTED_LINE_COLOR, (151 + col * Constants.CELL_SIZE, 150 + row *
                                                                       Constants.CELL_SIZE, Constants.CELL_SIZE + 1, Constants.CELL_SIZE + 2), 4)
-        return cell
+            return cell
 
     def update_board(self):
+        # Updates self.board to reflect any changes to cell values
         for i in range(9):
             for j in range(9):
                 self.board[i][j] = self.cell_dict[f'Cell{i}, {j}'].value
 
 
     def sketch(self, value, row, col, cell):
+        # Sketches the user-entered value at the row and column of the selected cell
+        # Also sets the cell's sketched value to the user entered value
         cell_font = pygame.font.Font(None, 35)
         cell_font_surf = cell_font.render(str(value), 0, (128, 128, 160))
         cell_rect = cell_font_surf.get_rect(center=(163 + col * Constants.CELL_SIZE, 170 + row * Constants.CELL_SIZE))

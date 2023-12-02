@@ -11,8 +11,9 @@ screen.fill(Constants.BG_COLOR)
 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 30)
 board.draw()
 
-no_winner = True
 
+no_winner = True
+cell = None
 
 while no_winner:
     for event in pygame.event.get():
@@ -31,7 +32,7 @@ while no_winner:
                 row, col = board.click(x, y)
                 cell = board.select(row, col)
 
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and cell is not None:
             if event.key == pygame.K_1:
                 board.sketch(1, row, col, cell)
             if event.key == pygame.K_2:
@@ -51,11 +52,19 @@ while no_winner:
             if event.key == pygame.K_9:
                 board.sketch(9, row, col, cell)
 
-            if event.key == pygame.K_RETURN:
-                # Sets the sketched value of the selected cell to the cell value
-                cell.set_cell_value(cell.sketched_value)
+            if event.key == pygame.K_BACKSPACE:
+                # Set the sketched value and cell value to 0 and redraw the board to reflect these changes
+                cell.set_sketched_value(0)
+                cell.set_cell_value(0)
                 screen.fill(Constants.BG_COLOR)
                 board.update_board()
+                board.draw()
+
+            if event.key == pygame.K_RETURN:
+                # Sets the sketched value of the selected cell to the cell value and redraws the updated board
+                cell.set_cell_value(cell.sketched_value)
+                board.update_board()
+                screen.fill(Constants.BG_COLOR)
                 board.draw()
     pygame.display.update()
 
