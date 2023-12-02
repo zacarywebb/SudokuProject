@@ -23,6 +23,9 @@ class Board:
         board = sudoku.get_board()
         self.board = board
 
+        # Create a copy of the original, unedited board so that the user may reset the board at any time
+        self.original_board = [x[:] for x in self.board]
+
         # Create each cell
         for i in range(9):
             for j in range(9):
@@ -75,11 +78,9 @@ class Board:
 
     def select(self, row, col):
         cell = self.cell_dict[f'Cell{row}, {col}']
-        # Only select if the value of the cell is 0
-        if cell.value == 0:
-            pygame.draw.rect(self.screen, Constants.SELECTED_LINE_COLOR, (151 + col * Constants.CELL_SIZE, 150 + row *
-                                                                      Constants.CELL_SIZE, Constants.CELL_SIZE + 1, Constants.CELL_SIZE + 2), 4)
-            return cell
+        pygame.draw.rect(self.screen, Constants.SELECTED_LINE_COLOR, (151 + col * Constants.CELL_SIZE, 150 + row *
+                                                Constants.CELL_SIZE, Constants.CELL_SIZE + 1, Constants.CELL_SIZE + 2), 4)
+        return cell
 
     def update_board(self):
         # Updates self.board to reflect any changes to cell values

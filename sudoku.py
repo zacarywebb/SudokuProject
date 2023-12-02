@@ -32,39 +32,60 @@ while no_winner:
                 row, col = board.click(x, y)
                 cell = board.select(row, col)
 
+
         if event.type == pygame.KEYDOWN and cell is not None:
-            if event.key == pygame.K_1:
-                board.sketch(1, row, col, cell)
-            if event.key == pygame.K_2:
-                board.sketch(2, row, col, cell)
-            if event.key == pygame.K_3:
-                board.sketch(3, row, col, cell)
-            if event.key == pygame.K_4:
-                board.sketch(4, row, col, cell)
-            if event.key == pygame.K_5:
-                board.sketch(5, row, col, cell)
-            if event.key == pygame.K_6:
-                board.sketch(6, row, col, cell)
-            if event.key == pygame.K_7:
-                board.sketch(7, row, col, cell)
-            if event.key == pygame.K_8:
-                board.sketch(8, row, col, cell)
-            if event.key == pygame.K_9:
-                board.sketch(9, row, col, cell)
+            # Only cells that were not randomly generated can be edited/sketched/deleted. board.original_board is used
+            # to check if the cell's original value is 0; if it is, the cell can be edited/sketched/deleted.
 
-            if event.key == pygame.K_BACKSPACE:
-                # Set the sketched value and cell value to 0 and redraw the board to reflect these changes
-                cell.set_sketched_value(0)
-                cell.set_cell_value(0)
-                screen.fill(Constants.BG_COLOR)
-                board.update_board()
-                board.draw()
+            # When a single digit integer is pressed, the corresponding value is sketched into the selected cell if that
+            # cell's value currently equals 0 (the cell is visually empty on the board)
+                if event.key == pygame.K_1:
+                    if cell.value == 0:
+                        board.sketch(1, row, col, cell)
+                if event.key == pygame.K_2:
+                    if cell.value == 0:
+                        board.sketch(2, row, col, cell)
+                if event.key == pygame.K_3:
+                    if cell.value == 0:
+                        board.sketch(3, row, col, cell)
+                if event.key == pygame.K_4:
+                    if cell.value == 0:
+                        board.sketch(4, row, col, cell)
+                if event.key == pygame.K_5:
+                    if cell.value == 0:
+                        board.sketch(5, row, col, cell)
+                if event.key == pygame.K_6:
+                    if cell.value == 0:
+                        board.sketch(6, row, col, cell)
+                if event.key == pygame.K_7:
+                    if cell.value == 0:
+                        board.sketch(7, row, col, cell)
+                if event.key == pygame.K_8:
+                    if cell.value == 0:
+                        board.sketch(8, row, col, cell)
+                if event.key == pygame.K_9:
+                    if cell.value == 0:
+                        board.sketch(9, row, col, cell)
 
-            if event.key == pygame.K_RETURN:
-                # Sets the sketched value of the selected cell to the cell value and redraws the updated board
-                cell.set_cell_value(cell.sketched_value)
-                board.update_board()
-                screen.fill(Constants.BG_COLOR)
-                board.draw()
+                if event.key == pygame.K_BACKSPACE:
+                    # Set the sketched value and cell value to 0 and re-draws the board to reflect these changes
+
+                    # Only does so if the value was not randomly generated (not entered by user)
+                    if board.original_board[row][col] == 0:
+                        cell.set_sketched_value(0)
+                        cell.set_cell_value(0)
+                        screen.fill(Constants.BG_COLOR)
+                        board.update_board()
+                        board.draw()
+
+                if event.key == pygame.K_RETURN:
+                    # Sets the sketched value of the selected cell to the cell value and re-draws the updated board
+
+                    # Only does so if the value was not randomly generated (not entered by user)
+                    if board.original_board[row][col] == 0:
+                        cell.set_cell_value(cell.sketched_value)
+                        board.update_board()
+                        screen.fill(Constants.BG_COLOR)
+                        board.draw()
     pygame.display.update()
 
