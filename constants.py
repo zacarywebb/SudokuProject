@@ -3,7 +3,7 @@ class Constants:
     HEIGHT = 600
     SCREEN_WIDTH = 900
     SCREEN_HEIGHT = 900
-    LINE_WIDTH = 10
+    LINE_WIDTH = 7
     WIN_LINE_WIDTH = 15
     BOARD_LINES = 4
     FONT_BOX_COLOR = (245, 152, 66)
@@ -11,3 +11,5 @@ class Constants:
     BG_COLOR = (255, 255, 245)
     BOX_SIZE = 200
     CELL_SIZE = 66.667
+    CELL_LINE_WIDTH = 2
+    SELECTED_LINE_COLOR = (255, 0, 0)
