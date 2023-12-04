@@ -110,3 +110,17 @@ class Board:
                 if i == 0:
                     return False
         return True
+
+
+    def reset_to_original(self):
+        # Create a copy of the original board and set self.board equal to it
+        self.board = [x[:] for x in self.original_board]
+
+    def check_board(self):
+        # Returns True if every value in self.board equals the corresponding value in self.correct_board
+        for i in range(9):
+            for j in range(9):
+                if self.board[i][j] != self.correct_board[i][j]:
+                    return False
+
+        return True
