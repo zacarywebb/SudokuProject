@@ -87,7 +87,7 @@ while no_winner:
                         board.update_board()
                         screen.fill(Constants.BG_COLOR)
                         board.draw()
-                    print(board.is_full())
+
 
                 if event.key == pygame.K_DOWN and row != 8:
                     # when the down arrow key is pressed, the cell below the current cell will become selected/outlined
