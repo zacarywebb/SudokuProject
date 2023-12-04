@@ -10,7 +10,6 @@ screen.fill(Constants.BG_COLOR)
 difficulty = None
 # ADD MENU SCREEN AND BOTTON CODE
 
-no_winner = True
 
 # The game/board will not initialize until a difficulty has been chosen by the user
 if difficulty is not None:
@@ -19,7 +18,7 @@ if difficulty is not None:
     board = Board(Constants.WIDTH, Constants.HEIGHT, screen, difficulty)
     board.draw()
     
-    while no_winner:
+    while True:
         for event in pygame.event.get():
             # Quit program if the user closes the window
             if event.type == pygame.QUIT:
