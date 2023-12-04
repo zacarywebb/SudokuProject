@@ -11,6 +11,8 @@ difficulty = None
 # ADD MENU SCREEN AND BOTTON CODE
 
 no_winner = True
+
+# The game/board will not initialize until a difficulty has been chosen by the user
 if difficulty is not None:
     cell = None
     # Initialize the board and draw it
