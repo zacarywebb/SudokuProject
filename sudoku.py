@@ -1,6 +1,6 @@
 import pygame, sys
-from Projects.SudokuProject.board import Board
-from Projects.SudokuProject.constants import Constants
+from board import Board
+from constants import Constants
 
 # Initialize pygame and the screen
 pygame.init()
@@ -87,5 +87,47 @@ while no_winner:
                         board.update_board()
                         screen.fill(Constants.BG_COLOR)
                         board.draw()
+                    print(board.is_full())
+
+                if event.key == pygame.K_DOWN and row != 8:
+                    # when the down arrow key is pressed, the cell below the current cell will become selected/outlined
+                    # Only does this if it is not the last row of the board
+                    row += 1
+                    screen.fill(Constants.BG_COLOR)
+                    board.draw()
+                    cell = board.select(row, col)
+
+                if event.key == pygame.K_UP and row != 0:
+                    # when the up arrow key is pressed, the cell above the current cell will become selected/outlined
+                    # Only does this if it is not the first row of the board
+                    row -= 1
+                    screen.fill(Constants.BG_COLOR)
+                    board.draw()
+                    cell = board.select(row, col)
+
+                if event.key == pygame.K_LEFT and col != 0:
+                    # when left arrow key is pressed, the cell left of the current cell will become selected/outlined
+                    # Only does this if it is not the first column of the board
+                    col -= 1
+                    screen.fill(Constants.BG_COLOR)
+                    board.draw()
+                    cell = board.select(row, col)
+
+                if event.key == pygame.K_RIGHT and col != 8:
+                    # when the right arrow key is pressed, the cell right of the current cell will become selected
+                    # Only does this if it is not the last column of the board
+                    col += 1
+                    screen.fill(Constants.BG_COLOR)
+                    board.draw()
+                    cell = board.select(row, col)
+
+
+        if event.type == pygame.KEYDOWN and cell is None:
+            # when no cell is selected, pressing one of the arrow keys will select the top left cell
+            if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_DOWN or event.key == pygame.K_UP:
+                row, col = 0, 0
+                cell = board.select(row, col)
+
+
     pygame.display.update()
 

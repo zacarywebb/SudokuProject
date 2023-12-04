@@ -1,7 +1,8 @@
 import pygame
-from Projects.SudokuProject.constants import *
+from constants import *
 from cell import Cell
 from sudoku_generator import SudokuGenerator
+
 
 class Board:
     def __init__(self, width, height, screen, difficulty):
@@ -65,12 +66,14 @@ class Board:
         col = -1
         if (150 <= x <= 750) and (150 <= y <= 750):
             for i in range(9):
-                if (150 + (i * Constants.CELL_SIZE)) <= float(x) <= (150 + (i * Constants.CELL_SIZE) + Constants.CELL_SIZE):
+                if (150 + (i * Constants.CELL_SIZE)) <= float(x) <= (
+                        150 + (i * Constants.CELL_SIZE) + Constants.CELL_SIZE):
                     col = i
                     break
 
             for j in range(9):
-                if (150 + (j * Constants.CELL_SIZE)) <= float(y) <= (150 + (j * Constants.CELL_SIZE) + Constants.CELL_SIZE):
+                if (150 + (j * Constants.CELL_SIZE)) <= float(y) <= (
+                        150 + (j * Constants.CELL_SIZE) + Constants.CELL_SIZE):
                     row = j
                     break
 
@@ -79,7 +82,8 @@ class Board:
     def select(self, row, col):
         cell = self.cell_dict[f'Cell{row}, {col}']
         pygame.draw.rect(self.screen, Constants.SELECTED_LINE_COLOR, (151 + col * Constants.CELL_SIZE, 150 + row *
-                                                Constants.CELL_SIZE, Constants.CELL_SIZE + 1, Constants.CELL_SIZE + 2), 4)
+                                                                      Constants.CELL_SIZE, Constants.CELL_SIZE + 1,
+                                                                      Constants.CELL_SIZE + 2), 4)
         return cell
 
     def update_board(self):
@@ -87,7 +91,6 @@ class Board:
         for i in range(9):
             for j in range(9):
                 self.board[i][j] = self.cell_dict[f'Cell{i}, {j}'].value
-
 
     def sketch(self, value, row, col, cell):
         # Sketches the user-entered value at the row and column of the selected cell
@@ -97,3 +100,13 @@ class Board:
         cell_rect = cell_font_surf.get_rect(center=(163 + col * Constants.CELL_SIZE, 170 + row * Constants.CELL_SIZE))
         cell.set_sketched_value(value)
         self.screen.blit(cell_font_surf, cell_rect)
+
+    def is_full(self):
+        # determines whether the board is full or not
+        # checks if any part of the cell is not equal to 0
+
+        for eachCell in self.board:
+            for i in eachCell:
+                if i == 0:
+                    return False
+        return True
