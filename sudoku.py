@@ -39,35 +39,35 @@ if difficulty is not None:
                 # Only cells that were not randomly generated can be edited/sketched/deleted. board.original_board is used
                 # to check if the cell's original value is 0; if it is, the cell can be edited/sketched/deleted.
     
-                # When a single digit integer is pressed, the corresponding value is sketched into the selected cell if that
-                # cell's value currently equals 0 (the cell is visually empty on the board)
-                    if event.key == pygame.K_1:
-                        if cell.value == 0:
-                            board.sketch(1, row, col, cell)
-                    if event.key == pygame.K_2:
-                        if cell.value == 0:
-                            board.sketch(2, row, col, cell)
-                    if event.key == pygame.K_3:
-                        if cell.value == 0:
-                            board.sketch(3, row, col, cell)
-                    if event.key == pygame.K_4:
-                        if cell.value == 0:
-                            board.sketch(4, row, col, cell)
-                    if event.key == pygame.K_5:
-                        if cell.value == 0:
-                            board.sketch(5, row, col, cell)
-                    if event.key == pygame.K_6:
-                        if cell.value == 0:
-                            board.sketch(6, row, col, cell)
-                    if event.key == pygame.K_7:
-                        if cell.value == 0:
-                            board.sketch(7, row, col, cell)
-                    if event.key == pygame.K_8:
-                        if cell.value == 0:
-                            board.sketch(8, row, col, cell)
-                    if event.key == pygame.K_9:
-                        if cell.value == 0:
-                            board.sketch(9, row, col, cell)
+            # When a single digit integer is pressed, the corresponding value is sketched into the selected cell if that
+            # cell's value and skecthed value currently equal 0 (the cell is visually empty on the board)
+                if event.key == pygame.K_1:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(1, row, col, cell)
+                if event.key == pygame.K_2:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(2, row, col, cell)
+                if event.key == pygame.K_3:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(3, row, col, cell)
+                if event.key == pygame.K_4:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(4, row, col, cell)
+                if event.key == pygame.K_5:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(5, row, col, cell)
+                if event.key == pygame.K_6:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(6, row, col, cell)
+                if event.key == pygame.K_7:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(7, row, col, cell)
+                if event.key == pygame.K_8:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(8, row, col, cell)
+                if event.key == pygame.K_9:
+                    if cell.value == 0 and cell.sketched_value == 0:
+                        board.sketch(9, row, col, cell)
     
                     if event.key == pygame.K_BACKSPACE:
                         # Set the sketched value and cell value to 0 and re-draws the board to reflect these changes
@@ -79,6 +79,8 @@ if difficulty is not None:
                             screen.fill(Constants.BG_COLOR)
                             board.update_board()
                             board.draw()
+                            # Redraw red rectangle around selected cell
+                            cell = board.select(row, col)
     
                     if event.key == pygame.K_RETURN:
                         # Sets the sketched value of the selected cell to the cell value and re-draws the updated board
@@ -89,6 +91,9 @@ if difficulty is not None:
                             board.update_board()
                             screen.fill(Constants.BG_COLOR)
                             board.draw()
+                            # Redraw red rectangle around selected cell
+                            cell = board.select(row, col)
+                            
     
     
                     if event.key == pygame.K_DOWN and row != 8:
