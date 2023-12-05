@@ -9,6 +9,7 @@ class Cell:
         self.cell_font = pygame.font.Font(None, 50)
         self.name = ""
         self.sketched_value = 0
+        self.original_value = self.value
 
     def set_cell_value(self, value):
         self.value = value
@@ -17,9 +18,14 @@ class Cell:
         self.sketched_value = value
 
     def draw(self):
+        # If the cell's original value is 0, when printing, the cell's font color should be blue
+        if self.original_value == 0:
+            cell_font_surf = self.cell_font.render(str(self.value), 0, (0, 100, 150))
+        else:
+            cell_font_surf = self.cell_font.render(str(self.value), 0, (0, 0, 0))
+
         # Print the cell value in the correct location if the value is not 0
         if self.value != 0:
-            cell_font_surf = self.cell_font.render(str(self.value), 0, (0, 0, 0))
             cell_rect = cell_font_surf.get_rect(center = (150 + Constants.CELL_SIZE/2 + self.col * Constants.CELL_SIZE, 150 + Constants.CELL_SIZE/2 + self.row * Constants.CELL_SIZE))
             self.screen.blit(cell_font_surf, cell_rect)
 
