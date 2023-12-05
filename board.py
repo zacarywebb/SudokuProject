@@ -74,7 +74,6 @@ class Board:
 
         resetbt = Button("Reset", 200, 800, True, self.screen)
         restartbt = Button("Restart", 400, 800, True, self.screen)
-        lose = Button("lose", 800, 800, True, self.screen)
 
 
 
