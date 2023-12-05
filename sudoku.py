@@ -38,10 +38,14 @@ cell = None
 
 no_winner = True
 
+difficulty = None
+
 # boolean variables to track when main menu buttons are clicked
 easy_button_clicked = False
 medium_button_clicked = False
 hard_button_clicked = False
+
+difficulty_selected = False
 
 while no_winner:
     for event in pygame.event.get():
@@ -52,23 +56,31 @@ while no_winner:
 
         mouse_pos = pygame.mouse.get_pos()
 
+        # If the user clicks down on the mouse pad
         # Boolean's are checked when clicked and allows game to start based on gamemode selected
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and not difficulty_selected:
             if easy_button_rect.collidepoint(mouse_pos):
                 easy_button_clicked = True
                 medium_button_clicked = True
                 hard_button_clicked = True
+                difficulty = 'easy'
                 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 30)
-            if medium_button_rect.collidepoint(mouse_pos):
+                difficulty_selected = True
+            elif medium_button_rect.collidepoint(mouse_pos):
                 easy_button_clicked = True
                 medium_button_clicked = True
                 hard_button_clicked = True
+                difficulty = 'medium'
                 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 40)
-            if hard_button_rect.collidepoint(mouse_pos):
+                difficulty_selected = True
+            elif hard_button_rect.collidepoint(mouse_pos):
                 easy_button_clicked = True
                 medium_button_clicked = True
                 hard_button_clicked = True
+                difficulty = 'hard'
                 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 50)
+                difficulty_selected = True
+
 
         #  The if statements that check if the cursor is over a gamemode to highlight the text
         #  based on that difficulty
@@ -88,7 +100,7 @@ while no_winner:
             hard_button = draw_text("HARD", button_font, TEXT_COL, 650, 600)
 
         # If the user clicks down on the mouse pad
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and difficulty is not None:
             x, y = event.pos
             if board.click(x, y) is not None:
                 # Reset the board to remove a previous cell selection (removes the red outline)
