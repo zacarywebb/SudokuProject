@@ -2,6 +2,9 @@ import pygame
 from constants import *
 from cell import Cell
 from sudoku_generator import SudokuGenerator
+from button import Button
+import sys
+pygame.init()
 
 
 class Board:
@@ -27,12 +30,19 @@ class Board:
         # Create a copy of the original, unedited board so that the user may reset the board at any time
         self.original_board = [x[:] for x in self.board]
 
+
         # Create each cell
         for i in range(9):
             for j in range(9):
                 cell = Cell(self.board[i][j], i, j, self.screen)
                 cell.name = f'Cell{i}, {j}'
                 self.cell_dict[cell.name] = cell
+
+
+
+
+
+
 
     def draw(self):
         # Draw horizontal lines
@@ -60,20 +70,27 @@ class Board:
                 cell = self.cell_dict[f'Cell{i}, {j}']
                 cell.draw()
 
+        exitbt = Button("Exit", 600, 800, True, self.screen)
+
+        resetbt = Button("Reset", 200, 800, True, self.screen)
+        restartbt = Button("Restart", 400, 800, True, self.screen)
+        lose = Button("lose", 800, 800, True, self.screen)
+
+
+
+
     def click(self, x, y):
         # Returns a tuple (row, col) of the cell that was marked at location (x, y)
         row = -1
         col = -1
         if (150 <= x <= 750) and (150 <= y <= 750):
             for i in range(9):
-                if (150 + (i * Constants.CELL_SIZE)) <= float(x) <= (
-                        150 + (i * Constants.CELL_SIZE) + Constants.CELL_SIZE):
+                if (150 + (i * Constants.CELL_SIZE)) <= float(x) <= (150 + (i * Constants.CELL_SIZE) + Constants.CELL_SIZE):
                     col = i
                     break
 
             for j in range(9):
-                if (150 + (j * Constants.CELL_SIZE)) <= float(y) <= (
-                        150 + (j * Constants.CELL_SIZE) + Constants.CELL_SIZE):
+                if (150 + (j * Constants.CELL_SIZE)) <= float(y) <= (150 + (j * Constants.CELL_SIZE) + Constants.CELL_SIZE):
                     row = j
                     break
 
@@ -82,8 +99,7 @@ class Board:
     def select(self, row, col):
         cell = self.cell_dict[f'Cell{row}, {col}']
         pygame.draw.rect(self.screen, Constants.SELECTED_LINE_COLOR, (151 + col * Constants.CELL_SIZE, 150 + row *
-                                                                      Constants.CELL_SIZE, Constants.CELL_SIZE + 1,
-                                                                      Constants.CELL_SIZE + 2), 4)
+                                                Constants.CELL_SIZE, Constants.CELL_SIZE + 1, Constants.CELL_SIZE + 2), 4)
         return cell
 
     def update_board(self):
@@ -91,6 +107,7 @@ class Board:
         for i in range(9):
             for j in range(9):
                 self.board[i][j] = self.cell_dict[f'Cell{i}, {j}'].value
+
 
     def sketch(self, value, row, col, cell):
         # Sketches the user-entered value at the row and column of the selected cell
@@ -111,10 +128,10 @@ class Board:
                     return False
         return True
 
-
     def reset_to_original(self):
         # Create a copy of the original board and set self.board equal to it
         self.board = [x[:] for x in self.original_board]
+
 
     def check_board(self):
         # Returns True if every value in self.board equals the corresponding value in self.correct_board
