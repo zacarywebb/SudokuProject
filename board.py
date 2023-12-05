@@ -74,6 +74,7 @@ class Board:
 
         resetbt = Button("Reset", 200, 800, True, self.screen)
         restartbt = Button("Restart", 400, 800, True, self.screen)
+        lose = Button("lose", 800, 800, True, self.screen)
 
 
 
@@ -130,6 +131,14 @@ class Board:
     def reset_to_original(self):
         # Create a copy of the original board and set self.board equal to it
         self.board = [x[:] for x in self.original_board]
+
+        # Reset Cell dictionary
+        for i in range(9):
+            for j in range(9):
+                cell = Cell(self.board[i][j], i, j, self.screen)
+                cell.name = f'Cell{i}, {j}'
+                self.cell_dict[cell.name] = cell
+        self.update_board()
 
 
     def check_board(self):
