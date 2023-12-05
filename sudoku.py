@@ -9,7 +9,37 @@ screen.fill(Constants.BG_COLOR)
 
 difficulty = None
 # ADD MENU SCREEN AND BOTTON CODE
+# Initialize the board and draw it
+pygame.display.set_caption("Sudoku")
 
+# Assign font's for texts
+font = pygame.font.SysFont("arialblack", 75)
+button_font = pygame.font.SysFont("arialblack", 50)
+
+# Assign dimensions for button's to select difficulty
+easy_button_rect = pygame.Rect(100, 600, 150, 50)
+medium_button_rect = pygame.Rect(325, 600, 200, 50)
+hard_button_rect = pygame.Rect(650, 600, 150, 50)
+
+# Assigns text colors
+TEXT_COL = (0, 0, 0) # Normal Text color
+EASY_HIGHTLIGHT_COLOR = (50, 205, 50) # Green Highlight
+MEDIUM_HIGHTLIGHT_COLOR = (255, 165, 0) # Orange Highlight
+HARD_HIGHTLIGHT_COLOR = (255, 0, 0) # Red Hightlight
+
+def draw_text(text, font, text_col, x, y): # Renders text
+    img = font.render(text, True, text_col)
+    rect = img.get_rect(topleft=(x, y))
+    screen.blit(img, rect)
+    return rect
+
+sudoku_headline = draw_text("SUDOKU!", font, TEXT_COL, 250, 250) # sudoku headline
+select_game_mode = draw_text("Select Game Mode:", button_font, TEXT_COL, 175, 425) # select game mode headline
+
+# boolean variables to track when main menu buttons are clicked
+easy_button_clicked = False
+medium_button_clicked = False
+hard_button_clicked = False
 
 # The game/board will not initialize until a difficulty has been chosen by the user
 if difficulty is not None:
@@ -24,6 +54,43 @@ if difficulty is not None:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
+            mouse_pos = pygame.mouse.get_pos()
+
+            # Boolean's are checked when clicked and allows game to start based on gamemode selected
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if easy_button_rect.collidepoint(mouse_pos):
+                    easy_button_clicked = True
+                    medium_button_clicked = True
+                    hard_button_clicked = True
+                    board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 30)
+                if medium_button_rect.collidepoint(mouse_pos):
+                    easy_button_clicked = True
+                    medium_button_clicked = True
+                    hard_button_clicked = True
+                    board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 40)
+                if hard_button_rect.collidepoint(mouse_pos):
+                    easy_button_clicked = True
+                    medium_button_clicked = True
+                    hard_button_clicked = True
+                    board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 50)
+        
+            # The if statements that check if the cursor is over a gamemode to highlight the text
+            # based on that difficulty
+            if not easy_button_clicked and easy_button_rect.collidepoint(mouse_pos):
+                easy_button = draw_text("EASY", button_font, EASY_HIGHTLIGHT_COLOR, 100, 600)
+            elif not easy_button_clicked:
+                easy_button = draw_text("EASY", button_font, TEXT_COL, 100, 600)
+        
+            if not medium_button_clicked and medium_button_rect.collidepoint(mouse_pos):
+                medium_button = draw_text("MEDIUM", button_font, MEDIUM_HIGHTLIGHT_COLOR, 325, 600)
+            elif not medium_button_clicked:
+                medium_button = draw_text("MEDIUM", button_font, TEXT_COL, 325, 600)
+        
+            if not hard_button_clicked and hard_button_rect.collidepoint(mouse_pos):
+                hard_button = draw_text("HARD", button_font, HARD_HIGHTLIGHT_COLOR, 650, 600)
+            elif not hard_button_clicked:
+                hard_button = draw_text("HARD", button_font, TEXT_COL, 650, 600)
     
             # If the user clicks down on the mouse pad
             if event.type == pygame.MOUSEBUTTONDOWN:
