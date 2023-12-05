@@ -128,6 +128,9 @@ while no_winner:
                 medium_button_rect = pygame.Rect(325, 600, 200, 50)
                 hard_button_rect = pygame.Rect(650, 600, 150, 50)
 
+                # Reset i
+                i = 0
+
                 # Assigns text colors
                 TEXT_COL = (0, 0, 0)  # Normal Text color
                 EASY_HIGHTLIGHT_COLOR = (50, 205, 50)  # Green Highlight
