@@ -7,7 +7,7 @@ pygame.init()
 screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
 screen.fill(Constants.BG_COLOR)
 
-# Initialize the board and draw it
+
 pygame.display.set_caption("Sudoku")
 
 # Assign font's for texts
@@ -46,6 +46,9 @@ medium_button_clicked = False
 hard_button_clicked = False
 
 difficulty_selected = False
+
+# i is used to ensure that when the user clicks a button on the menu screen, the cell at that location isn't highligthed
+i = 0
 
 while no_winner:
     for event in pygame.event.get():
@@ -106,9 +109,12 @@ while no_winner:
                 # Reset the board to remove a previous cell selection (removes the red outline)
                 screen.fill(Constants.BG_COLOR)
                 board.draw()
-                row, col = board.click(x, y)
-                cell = board.select(row, col)
-
+                # When the user clicks a button on the menu screen, the correspinding cell at that x, y pos, should not
+                # be selected
+                if i != 0:
+                    row, col = board.click(x, y)
+                    cell = board.select(row, col)
+                i += 1
 
         if event.type == pygame.KEYDOWN and cell is not None:
             # Only cells that were not randomly generated can be edited/sketched/deleted. board.original_board is used
@@ -169,37 +175,47 @@ while no_winner:
                     # Redraw red rectangle around selected cell
                     cell = board.select(row, col)
 
-                    if event.key == pygame.K_DOWN and row != 8:
-                        # when the down arrow key is pressed, the cell below the current cell will become selected/outlined
-                        # Only does this if it is not the last row of the board
-                        row += 1
-                        screen.fill(Constants.BG_COLOR)
-                        board.draw()
-                        cell = board.select(row, col)
+                    # Once a new value is entered by the user, the board will be checked to determine if it is full.
+                    # If it is full, it will be checked to determine if the user won or lost the game.
+                    if board.is_full():
+                        if board.check_board():
+                            # ADD GAME WON SCREEN HERE
+                            pass
+                        else:
+                            #ADD GAME LOST SCREEN HERE
+                            pass
 
-                    if event.key == pygame.K_UP and row != 0:
-                        # when the up arrow key is pressed, the cell above the current cell will become selected/outlined
-                        # Only does this if it is not the first row of the board
-                        row -= 1
-                        screen.fill(Constants.BG_COLOR)
-                        board.draw()
-                        cell = board.select(row, col)
+            if event.key == pygame.K_DOWN and row != 8:
+                # when the down arrow key is pressed, the cell below the current cell will become selected/outlined
+                # Only does this if it is not the last row of the board
+                row += 1
+                screen.fill(Constants.BG_COLOR)
+                board.draw()
+                cell = board.select(row, col)
 
-                    if event.key == pygame.K_LEFT and col != 0:
-                        # when left arrow key is pressed, the cell left of the current cell will become selected/outlined
-                        # Only does this if it is not the first column of the board
-                        col -= 1
-                        screen.fill(Constants.BG_COLOR)
-                        board.draw()
-                        cell = board.select(row, col)
+            if event.key == pygame.K_UP and row != 0:
+                # when the up arrow key is pressed, the cell above the current cell will become selected/outlined
+                # Only does this if it is not the first row of the board
+                row -= 1
+                screen.fill(Constants.BG_COLOR)
+                board.draw()
+                cell = board.select(row, col)
 
-                    if event.key == pygame.K_RIGHT and col != 8:
-                        # when the right arrow key is pressed, the cell right of the current cell will become selected
-                        # Only does this if it is not the last column of the board
-                        col += 1
-                        screen.fill(Constants.BG_COLOR)
-                        board.draw()
-                        cell = board.select(row, col)
+            if event.key == pygame.K_LEFT and col != 0:
+                # when left arrow key is pressed, the cell left of the current cell will become selected/outlined
+                # Only does this if it is not the first column of the board
+                col -= 1
+                screen.fill(Constants.BG_COLOR)
+                board.draw()
+                cell = board.select(row, col)
+
+            if event.key == pygame.K_RIGHT and col != 8:
+                # when the right arrow key is pressed, the cell right of the current cell will become selected
+                # Only does this if it is not the last column of the board
+                col += 1
+                screen.fill(Constants.BG_COLOR)
+                board.draw()
+                cell = board.select(row, col)
 
         if event.type == pygame.KEYDOWN and cell is None:
             # when no cell is selected, pressing one of the arrow keys will select the top left cell
