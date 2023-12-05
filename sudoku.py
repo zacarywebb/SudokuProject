@@ -4,6 +4,7 @@ from constants import Constants
 from button import Button
 import sys
 
+v=0
 # Initialize pygame and the screen
 pygame.init()
 screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
@@ -73,12 +74,14 @@ while no_winner:
                 difficulty = 'easy'
                 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 30)
                 difficulty_selected = True
+                v=0
             elif medium_button_rect.collidepoint(mouse_pos):
                 easy_button_clicked = True
                 medium_button_clicked = True
                 hard_button_clicked = True
                 difficulty = 'medium'
                 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 40)
+                v=0
                 difficulty_selected = True
             elif hard_button_rect.collidepoint(mouse_pos):
                 easy_button_clicked = True
@@ -87,6 +90,7 @@ while no_winner:
                 difficulty = 'hard'
                 board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 50)
                 difficulty_selected = True
+                v=0
 
 
         #  The if statements that check if the cursor is over a gamemode to highlight the text
@@ -111,6 +115,9 @@ while no_winner:
             exitbt = Button("Exit", 600, 800, True, screen)
             resetbt = Button("Reset", 200, 800, True, screen)
             restartbt = Button("Restart", 400, 800, True, screen)
+            restart1 = Button("Restart", 370, 560, True, screen)
+
+
             if exitbt.check_click():
                 sys.exit()
             if restartbt.check_click():
@@ -127,9 +134,6 @@ while no_winner:
                 easy_button_rect = pygame.Rect(100, 600, 150, 50)
                 medium_button_rect = pygame.Rect(325, 600, 200, 50)
                 hard_button_rect = pygame.Rect(650, 600, 150, 50)
-
-                # Reset i
-                i = 0
 
                 # Assigns text colors
                 TEXT_COL = (0, 0, 0)  # Normal Text color
@@ -169,7 +173,7 @@ while no_winner:
                 board.draw()
 
             x, y = event.pos
-            if board.click(x, y) is not None:
+            if board.click(x, y)  and v!=1:
                 # Reset the board to remove a previous cell selection (removes the red outline)
                 screen.fill(Constants.BG_COLOR)
                 board.draw()
@@ -250,7 +254,62 @@ while no_winner:
                             if exit1.check_click():
                                 sys.exit()
                         else:
-                            #ADD GAME LOST SCREEN HERE
+                            v = 1
+
+                            screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+                            screen.fill(Constants.BG_COLOR)
+                            sudoku_headline = draw_text("GAME OVER :( ", font, TEXT_COL, 200, 250)  # sudoku headline
+                            restart1 = Button("Restart", 370, 560, True, screen)
+
+                        if restart1.check_click():
+                            screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+                            screen.fill(Constants.BG_COLOR)
+
+                            pygame.display.set_caption("Sudoku")
+
+                            # Assign font's for texts
+                            font = pygame.font.SysFont("arialblack", 75)
+                            button_font = pygame.font.SysFont("arialblack", 50)
+
+                            # Assign dimensions for button's to select difficulty
+                            easy_button_rect = pygame.Rect(100, 600, 150, 50)
+                            medium_button_rect = pygame.Rect(325, 600, 200, 50)
+                            hard_button_rect = pygame.Rect(650, 600, 150, 50)
+
+                            # Assigns text colors
+                            TEXT_COL = (0, 0, 0)  # Normal Text color
+                            EASY_HIGHTLIGHT_COLOR = (50, 205, 50)  # Green Highlight
+                            MEDIUM_HIGHTLIGHT_COLOR = (255, 165, 0)  # Orange Highlight
+                            HARD_HIGHTLIGHT_COLOR = (255, 0, 0)  # Red Hightlight
+
+
+                            def draw_text(text, font, text_col, x, y):  # Renders text
+                                img = font.render(text, True, text_col)
+                                rect = img.get_rect(topleft=(x, y))
+                                screen.blit(img, rect)
+                                return rect
+
+
+                            sudoku_headline = draw_text("SUDOKU!", font, TEXT_COL, 250, 250)  # sudoku headline
+                            select_game_mode = draw_text("Select Game Mode:", button_font, TEXT_COL, 175,
+                                                         425)  # select game mode headline
+
+                            cell = None
+
+                            no_winner = True
+
+                            difficulty = None
+
+                            # boolean variables to track when main menu buttons are clicked
+                            easy_button_clicked = False
+                            medium_button_clicked = False
+                            hard_button_clicked = False
+
+                            difficulty_selected = False
+
+                            # i is used to ensure that when the user clicks a button on the menu screen, the cell at that location isn't highligthed
+                            i = 0
+
                             pass
 
             if event.key == pygame.K_DOWN and row != 8:
