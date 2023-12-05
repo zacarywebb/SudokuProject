@@ -1,6 +1,8 @@
 import pygame, sys
 from board import Board
 from constants import Constants
+from button import Button
+import sys
 
 # Initialize pygame and the screen
 pygame.init()
@@ -60,8 +62,10 @@ while no_winner:
         mouse_pos = pygame.mouse.get_pos()
 
         # If the user clicks down on the mouse pad
+
         # Boolean's are checked when clicked and allows game to start based on gamemode selected
         if event.type == pygame.MOUSEBUTTONDOWN and not difficulty_selected:
+
             if easy_button_rect.collidepoint(mouse_pos):
                 easy_button_clicked = True
                 medium_button_clicked = True
@@ -104,6 +108,63 @@ while no_winner:
 
         # If the user clicks down on the mouse pad
         if event.type == pygame.MOUSEBUTTONDOWN and difficulty is not None:
+            exitbt = Button("Exit", 600, 800, True, screen)
+            resetbt = Button("Reset", 200, 800, True, screen)
+            restartbt = Button("Restart", 400, 800, True, screen)
+            if exitbt.check_click():
+                sys.exit()
+            if restartbt.check_click():
+                screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+                screen.fill(Constants.BG_COLOR)
+
+                pygame.display.set_caption("Sudoku")
+
+                # Assign font's for texts
+                font = pygame.font.SysFont("arialblack", 75)
+                button_font = pygame.font.SysFont("arialblack", 50)
+
+                # Assign dimensions for button's to select difficulty
+                easy_button_rect = pygame.Rect(100, 600, 150, 50)
+                medium_button_rect = pygame.Rect(325, 600, 200, 50)
+                hard_button_rect = pygame.Rect(650, 600, 150, 50)
+
+                # Assigns text colors
+                TEXT_COL = (0, 0, 0)  # Normal Text color
+                EASY_HIGHTLIGHT_COLOR = (50, 205, 50)  # Green Highlight
+                MEDIUM_HIGHTLIGHT_COLOR = (255, 165, 0)  # Orange Highlight
+                HARD_HIGHTLIGHT_COLOR = (255, 0, 0)  # Red Hightlight
+
+
+                def draw_text(text, font, text_col, x, y):  # Renders text
+                    img = font.render(text, True, text_col)
+                    rect = img.get_rect(topleft=(x, y))
+                    screen.blit(img, rect)
+                    return rect
+
+
+                sudoku_headline = draw_text("SUDOKU!", font, TEXT_COL, 250, 250)  # sudoku headline
+                select_game_mode = draw_text("Select Game Mode:", button_font, TEXT_COL, 175,
+                                             425)  # select game mode headline
+
+                cell = None
+
+                no_winner = True
+
+                difficulty = None
+
+                # boolean variables to track when main menu buttons are clicked
+                easy_button_clicked = False
+                medium_button_clicked = False
+                hard_button_clicked = False
+
+                difficulty_selected = False
+
+                # i is used to ensure that when the user clicks a button on the menu screen, the cell at that location isn't highligthed
+                i = 0
+            if resetbt.check_click():
+                board.reset_to_original()
+                board.draw()
+
             x, y = event.pos
             if board.click(x, y) is not None:
                 # Reset the board to remove a previous cell selection (removes the red outline)
@@ -179,8 +240,12 @@ while no_winner:
                     # If it is full, it will be checked to determine if the user won or lost the game.
                     if board.is_full():
                         if board.check_board():
-                            # ADD GAME WON SCREEN HERE
-                            pass
+                            screen1.fill(Constants.BG_COLOR)
+                            pygame.display.set_caption("Sudoku")
+                            sudoku_headline = draw_text("GAME WON !", font, TEXT_COL, 200, 250)  # sudoku headline
+                            exit1 = Button("Exit", 370, 560, True, screen1)
+                            if exit1.check_click():
+                                sys.exit()
                         else:
                             #ADD GAME LOST SCREEN HERE
                             pass
