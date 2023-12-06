@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame
 from board import Board
 from constants import Constants
 from button import Button
@@ -72,7 +72,7 @@ while no_winner:
                 medium_button_clicked = True
                 hard_button_clicked = True
                 difficulty = 'easy'
-                board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 30)
+                board = Board(Constants.WIDTH, Constants.HEIGHT, screen, 1)
                 difficulty_selected = True
                 v=0
             elif medium_button_rect.collidepoint(mouse_pos):
@@ -305,18 +305,20 @@ while no_winner:
                     # If it is full, it will be checked to determine if the user won or lost the game.
                     if board.is_full():
                         if board.check_board():
-                            screen.fill(Constants.BG_COLOR)
+                            v = 1
+                            screen1 = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
+                            screen1.fill(Constants.BG_COLOR)
                             pygame.display.set_caption("Sudoku")
                             sudoku_headline = draw_text("GAME WON !", font, TEXT_COL, 200, 250)  # sudoku headline
-                            exit1 = Button("Exit", 600, 800, True, screen)
+                            exit1 = Button("Exit", 600, 800, True, screen1)
 
                         else:
-                            v=1
+                            v = 1
                             screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
                             screen.fill(Constants.BG_COLOR)
                             sudoku_headline = draw_text("GAME OVER :( ", font, TEXT_COL, 200, 250)  # sudoku headline
                             restart1 = Button("Restart", 400, 800, True, screen)
-                            pass
+
 
 
 
