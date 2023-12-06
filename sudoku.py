@@ -64,7 +64,7 @@ while no_winner:
 
         # If the user clicks down on the mouse pad
 
-        # Boolean's are checked when clicked and allows game to start based on gamemode selected
+        # Booleans are checked when clicked and allows game to start based on gamemode selected
         if event.type == pygame.MOUSEBUTTONDOWN and not difficulty_selected:
 
             if easy_button_rect.collidepoint(mouse_pos):
@@ -217,18 +217,21 @@ while no_winner:
 
                 difficulty_selected = False
 
-                # i is used to ensure that when the user clicks a button on the menu screen, the cell at that location isn't highligthed
+                # i is used to ensure that when the user clicks a button on the menu screen, the cell at that
+                # location isn't highlighted
                 i = 0
             if resetbt.check_click():
                 board.reset_to_original()
+                screen.fill(Constants.BG_COLOR)
                 board.draw()
+
 
             x, y = event.pos
             if board.click(x, y)  and v!=1:
                 # Reset the board to remove a previous cell selection (removes the red outline)
                 screen.fill(Constants.BG_COLOR)
                 board.draw()
-                # When the user clicks a button on the menu screen, the correspinding cell at that x, y pos, should not
+                # When the user clicks a button on the menu screen, the corresponding cell at that x, y pos, should not
                 # be selected
                 if i != 0:
                     row, col = board.click(x, y)
@@ -298,10 +301,10 @@ while no_winner:
                     # If it is full, it will be checked to determine if the user won or lost the game.
                     if board.is_full():
                         if board.check_board():
-                            screen1.fill(Constants.BG_COLOR)
+                            screen.fill(Constants.BG_COLOR)
                             pygame.display.set_caption("Sudoku")
                             sudoku_headline = draw_text("GAME WON !", font, TEXT_COL, 200, 250)  # sudoku headline
-                            exit1 = Button("Exit", 370, 560, True, screen1)
+                            exit1 = Button("Exit", 370, 560, True, screen)
                             if exit1.check_click():
                                 sys.exit()
                         else:
