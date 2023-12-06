@@ -138,7 +138,6 @@ class Board:
                 cell = Cell(self.board[i][j], i, j, self.screen)
                 cell.name = f'Cell{i}, {j}'
                 self.cell_dict[cell.name] = cell
-        self.update_board()
 
 
     def check_board(self):
