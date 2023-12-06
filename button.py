@@ -16,7 +16,8 @@ class Button:
         button_text=font.render(self.text, True, 'black')
         button_rect= pygame.rect.Rect((self.x_pos, self.y_pos), (120,50))
         if self.check_click():
-            pygame.draw.rect(self.where, "red", button_rect,0,5)
+            pass
+
         else:
             pygame.draw.rect(self.where, "grey",button_rect,0,5)
         pygame.draw.rect(self.where,"black", button_rect,2,5)
