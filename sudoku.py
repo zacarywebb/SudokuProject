@@ -64,7 +64,7 @@ while no_winner:
 
         # If the user clicks down on the mouse pad
 
-        # Booleans are checked when clicked and allows game to start based on gamemode selected
+        # Boolean's are checked when clicked and allows game to start based on gamemode selected
         if event.type == pygame.MOUSEBUTTONDOWN and not difficulty_selected:
 
             if easy_button_rect.collidepoint(mouse_pos):
@@ -116,6 +116,12 @@ while no_winner:
             resetbt = Button("Reset", 200, 800, True, screen)
             restartbt = Button("Restart", 400, 800, True, screen)
             restart1 = Button("Restart", 400, 800, True, screen)
+            exit1 = Button("Exit", 600, 800, True, screen)
+
+            if exit1.check_click():
+                sys.exit()
+
+
 
 
             if restart1.check_click():
@@ -217,21 +223,19 @@ while no_winner:
 
                 difficulty_selected = False
 
-                # i is used to ensure that when the user clicks a button on the menu screen, the cell at that
-                # location isn't highlighted
+                # i is used to ensure that when the user clicks a button on the menu screen, the cell at that location isn't highligthed
                 i = 0
             if resetbt.check_click():
                 board.reset_to_original()
                 screen.fill(Constants.BG_COLOR)
                 board.draw()
 
-
             x, y = event.pos
             if board.click(x, y)  and v!=1:
                 # Reset the board to remove a previous cell selection (removes the red outline)
                 screen.fill(Constants.BG_COLOR)
                 board.draw()
-                # When the user clicks a button on the menu screen, the corresponding cell at that x, y pos, should not
+                # When the user clicks a button on the menu screen, the correspinding cell at that x, y pos, should not
                 # be selected
                 if i != 0:
                     row, col = board.click(x, y)
@@ -305,8 +309,7 @@ while no_winner:
                             pygame.display.set_caption("Sudoku")
                             sudoku_headline = draw_text("GAME WON !", font, TEXT_COL, 200, 250)  # sudoku headline
                             exit1 = Button("Exit", 370, 560, True, screen)
-                            if exit1.check_click():
-                                sys.exit()
+
                         else:
                             v=1
                             screen = pygame.display.set_mode((Constants.SCREEN_WIDTH, Constants.SCREEN_HEIGHT))
