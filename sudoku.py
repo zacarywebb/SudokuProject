@@ -308,7 +308,7 @@ while no_winner:
                             screen.fill(Constants.BG_COLOR)
                             pygame.display.set_caption("Sudoku")
                             sudoku_headline = draw_text("GAME WON !", font, TEXT_COL, 200, 250)  # sudoku headline
-                            exit1 = Button("Exit", 370, 560, True, screen)
+                            exit1 = Button("Exit", 600, 800, True, screen)
 
                         else:
                             v=1
